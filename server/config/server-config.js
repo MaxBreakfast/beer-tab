@@ -21,6 +21,7 @@ app.get('/login', function (req, res) {
 });
 
 app.post('/table', handler.getTable);
+app.get('/tabs', handler.findAllUsers)
 app.post('/login', handler.loginUser);
 app.post('/signup', handler.signupUser);
 app.post('/tabs', handler.toTabs);

@@ -4,6 +4,16 @@ var jwt = require('jwt-simple');
 
 var User = require('./db-config.js');
 
+exports.findAllUsers = function(req, res){
+  User.find({}, function(err, docs){
+    if(!err){
+      res.json(docs)
+    }else{
+      console.error(err);
+    }
+  })
+}
+
 exports.signupUser = function (req, res) {
 
   User.findOne({username: req.body.username})
@@ -14,7 +24,7 @@ exports.signupUser = function (req, res) {
           if (err) {
             res.status(418).end();
           } else {
-            var token = jwt.encode(user, 'argleDavidBargleRosson');
+            var token = jwt.encode(newUser, 'argleDavidBargleRosson');
             res.json({token: token});
             console.log('Success: Account added to database.');
             res.status(201).end();
