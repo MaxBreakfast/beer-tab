@@ -76,6 +76,32 @@ main.controller('MainCtrl', function($scope, $window, beerPmt, jwtHelper, AuthSe
     }
 });
 
+  $scope.findUser = function(inputStr){
+    $scope.results = []
+    beerPmt.findUsers().then(function(data){
+      if(inputStr.length>0){
+      for(var i=0; i<data.length; i++){
+        if(data[i].username.match(inputStr) !== null){
+          $scope.results.push(data[i].username)
+        }
+      }
+        
+      }
+      console.log($scope.results)
+    })
+  }
+  $scope.toggle = function(){
+    if($scope.clicked===false){
+      $scope.clicked=true
+    }else{
+      $scope.clicked=false;
+    }
+  }
+  $scope.clearField = function(){
+    $scope.toUser = ''
+
+  }
+
 
 main.filter('range', function() {
     return function(input, total) {
