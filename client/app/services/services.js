@@ -69,8 +69,22 @@ angular.module('beer-tab.services', [])
     });
   };
 
+
+  var findUsers = function(){
+    return $http({
+      method: 'GET',
+      url: '/api/tabs'
+    })
+    .then(function(resp){
+      console.log(resp.data);
+      return resp.data;
+    })
+  }
+
+
   return {
-    newIOU: newIOU,
+    findUsers: findUsers,
+    newIOU: newIOU
   };
 })
 .factory('util', function(){
