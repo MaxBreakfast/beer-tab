@@ -7,6 +7,7 @@ main.controller('MainCtrl', function($scope, $window, beerPmt, jwtHelper, AuthSe
     // Decode token (this uses angular-jwt. notice jwtHelper)
     $scope.decodedJwt = $scope.jwt && jwtHelper.decodeToken($scope.jwt);
     // Object used to contain user's beer network
+   
 
 
     getTable.getTable($scope.username)
@@ -37,10 +38,10 @@ main.controller('MainCtrl', function($scope, $window, beerPmt, jwtHelper, AuthSe
     $scope.sendBeer = function(user) {
 
         if (user) {
-            console.log('sendBeer called', user);
+            console.log('sendBeer called', user.username);
 
             if (AuthService.isAuth()) {
-                beerPmt.newIOU(user)
+                beerPmt.newIOU(user.username)
                     .then(function(derp) {
                         console.log(derp);
                         $scope.network = util.toArr(derp.network);
@@ -50,12 +51,12 @@ main.controller('MainCtrl', function($scope, $window, beerPmt, jwtHelper, AuthSe
         }
     };
     $scope.findUser = function(inputStr) {
-        $scope.results = []
+         $scope.results = []
         beerPmt.findUsers().then(function(data) {
             if (inputStr.length > 0) {
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].username.match(inputStr) !== null) {
-                        $scope.results.push(data[i].username)
+                    if (data[i].name.first.toLowerCase().match(inputStr.toLowerCase()) !== null || data[i].name.last.toLowerCase().match(inputStr.toLowerCase())!==null) {
+                        $scope.results.push({name: data[i].name.first +' '+data[i].name.last, username: data[i].username})
                     }
                 }
 
@@ -71,36 +72,12 @@ main.controller('MainCtrl', function($scope, $window, beerPmt, jwtHelper, AuthSe
         }
     }
     $scope.clearField = function() {
-        $scope.toUser = ''
+        $scope.toUser = '';
+        $scope.results = [];
 
     }
 });
 
-  $scope.findUser = function(inputStr){
-    $scope.results = []
-    beerPmt.findUsers().then(function(data){
-      if(inputStr.length>0){
-      for(var i=0; i<data.length; i++){
-        if(data[i].username.match(inputStr) !== null){
-          $scope.results.push(data[i].username)
-        }
-      }
-        
-      }
-      console.log($scope.results)
-    })
-  }
-  $scope.toggle = function(){
-    if($scope.clicked===false){
-      $scope.clicked=true
-    }else{
-      $scope.clicked=false;
-    }
-  }
-  $scope.clearField = function(){
-    $scope.toUser = ''
-
-  }
 
 
 main.filter('range', function() {

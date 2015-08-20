@@ -19,15 +19,20 @@
         <form ng-submit="sendBeer(toUser)" name="send-beer" novalidate>
             <ul class="ul-list" ng-show="clicked">
                 <li class='center'>
-                    <div>
-                        <input ng-keyUp='findUser(toUser)' type="text" class="send-beer input" placeholder="I owe a beer to..." ng-model="toUser" ng-minlength="3" ng-maxlength="20" required><span class="icon"><i class="fa fa-user"></i></span></li>
+                    <ui-select id='ui-select-container'ng-model='result.selected' ng-controller='MainCtrl' on-select='sendBeer(result.selected); toggle(); clearField()' ng-disabled="false" theme='bootstrap' reset-search-input="true" uiSelectConfig.appendToBody=true; style="width: 300px;">
+                        <ui-select-match id='ui-select-container' placeholder="I owe a beer to...">{{$select.selected.name}}</ui-select-match>
+                        <ui-select-choices repeat='user in results|limitTo:10' refresh='findUser($select.search)' refresh-delay='0'>
+                            <div ng-bind-html='user.name | highlight: $select.search'></div>
+                        </ui-select-choices>
+                        </ui=select>
+                <!--       <input ng-keyUp='findUser(toUser)' type="text" class="send-beer input" placeholder="I owe a beer to..." ng-model="toUser" ng-maxlength="20" required><span class="icon"><i class="fa fa-user"></i></span></li>
                 <li ng-repeat='user in results|limitTo:10'>
-                    <a class="ul-list" ng-click="sendBeer(user); toggle(); clearField() ">{{user}}</a>
-                </li>
+                    <a class="ul-list" ng-click="sendBeer(user); toggle(); clearField() ">{{user.name}}</a>
+                </li> -->
                 <li>
                     <input type="submit" value="SEND BEER" class="btn btn2" ng-disabled="login.$invalid" disabled="disabled" ng-click="toggle(); clearField();">
                 </li>
             </ul>
         </form>
-        </div>
     </div>
+</div>
